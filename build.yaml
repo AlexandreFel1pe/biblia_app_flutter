@@ -1,0 +1,7 @@
+ targets:
+      $default:
+        builders:
+          source_gen|combining_builder:
+            options:
+              build_extensions:
+                '^lib/services/models/{{}}.dart': 'lib/services/models/g_models/{{}}.g.dart'
