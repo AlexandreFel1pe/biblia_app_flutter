@@ -17,4 +17,42 @@ class BibliaRepository {
 
     return booksNames;
   }
+
+  Future<List<int>> getChapters(String bookName) async {
+    Biblia biblia = await _bibliaJsonService.loadBiblia();
+    List<int> chapters = [];
+
+    for (var book in biblia.livro) {
+      if (book.nomeLivro == bookName) {
+        for (var chapter in book.capitulo) {
+          chapters.add(chapter.numeroCapitulo);
+        }
+
+        return chapters;
+      }
+    }
+
+    return List.empty();
+  }
+
+  Future<List<int>> getVerses(String bookName, int chpaterNumber) async {
+    Biblia biblia = await _bibliaJsonService.loadBiblia();
+    List<int> verses = [];
+
+    for (var book in biblia.livro) {
+      if (book.nomeLivro == bookName) {
+        for (var chapter in book.capitulo) {
+          if (chapter.numeroCapitulo == chpaterNumber) {
+            for (var verse in chapter.versiculo) {
+              verses.add(verse.numeroVersiculo);
+            }
+
+            return verses;
+          }
+        }
+      }
+    }
+
+    return List.empty();
+  }
 }

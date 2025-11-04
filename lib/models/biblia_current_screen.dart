@@ -1,0 +1,1 @@
+enum BibliaCurrentScreen { bookSelector, chapterSelector, verseSelector }

@@ -1,35 +1,70 @@
 import 'dart:collection';
+import 'package:biblia/models/biblia_current_screen.dart';
+import 'package:biblia/models/biblia_selected.dart';
 import 'package:biblia/repositories/biblia_repository.dart';
 import 'package:flutter/material.dart';
 
 class BibliaViewModel extends ChangeNotifier {
   BibliaViewModel({required BibliaRepository bibliaRepository}) : _bibliaRepository = bibliaRepository {
-    loadBiblia();
+    goToBookSelector();
   }
 
   late final BibliaRepository _bibliaRepository;
   
-  UnmodifiableListView<String> get livros => UnmodifiableListView(_livros.reversed);
-
   List<String> _livros = [];
-  //Biblia? biblia;
+  UnmodifiableListView<String> get livros => UnmodifiableListView(_livros);
 
-  bool _bibliaIsLoaded = false;
-
-  bool get getBibliaIsLoaded {
-    return _bibliaIsLoaded;
+  List<int> _chapters = [];
+  get chapters {
+    return _chapters;
   }
 
-  set bibliaIsLoaded(bool isLoaded) {
-    _bibliaIsLoaded = isLoaded;
+  List<int> _verses = [];
+  get verses {
+    return _verses;
+  }
+
+  BibliaCurrentScreen currentScreen = BibliaCurrentScreen.bookSelector;
+  BibliaSelected currentSelected = BibliaSelected();
+
+  void goToBookSelector() async {
+    currentScreen = BibliaCurrentScreen.bookSelector;
+    _livros = await _bibliaRepository.getBooksNames();
+
     notifyListeners();
   }
 
-  void loadBiblia() async {
-    _livros = await _bibliaRepository.getBooksNames();
+  void goToChapterSelector(String bookName) async {
+    currentScreen = BibliaCurrentScreen.chapterSelector;
+    currentSelected.bookName = bookName;
 
-    if(_livros.isNotEmpty) {
-      bibliaIsLoaded = true;
+    _chapters = await _bibliaRepository.getChapters(currentSelected.bookName);
+    print(bookName);
+
+    notifyListeners();
+  }
+
+  void goToVerseSelector(int chapterNumber) async {
+    currentScreen = BibliaCurrentScreen.verseSelector;
+    currentSelected.chapterNumber = chapterNumber;
+
+    _verses = await _bibliaRepository.getVerses(currentSelected.bookName, currentSelected.chapterNumber);
+
+    print(chapterNumber);
+
+    notifyListeners();
+  }
+
+  void mudeATela() {
+    if (currentScreen == BibliaCurrentScreen.bookSelector) {
+      currentScreen = BibliaCurrentScreen.chapterSelector;
     }
+    else {
+      currentScreen = BibliaCurrentScreen.bookSelector;
+    }
+
+    print(currentScreen);
+
+    notifyListeners();
   }
 }

@@ -1,6 +1,5 @@
 import 'package:biblia/repositories/biblia_repository.dart';
 import 'package:biblia/screens/biblia_screen.dart';
-import 'package:biblia/screens/old_biblia_screen.dart';
 import 'package:biblia/services/biblia_json_service.dart';
 import 'package:biblia/viewmodels/biblia_viewmodel.dart';
 import 'package:biblia/viewmodels/old_biblia_viewmodel.dart';

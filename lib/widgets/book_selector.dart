@@ -2,8 +2,8 @@ import 'package:biblia/viewmodels/biblia_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BookCardList extends StatelessWidget {
-  const BookCardList({super.key});
+class BookSelector extends StatelessWidget {
+  const BookSelector({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class BookCardList extends StatelessWidget {
            child: Column(
             children: [
               Text(
-                'Livros',
+                'Bíblia',
                 style: TextStyle(
                   fontSize: 25,
                 ),
@@ -26,11 +26,21 @@ class BookCardList extends StatelessWidget {
               Center(
                 child: Column(
                   children: [
-                    if (biblia.getBibliaIsLoaded)
-                      for (var i = 0; i < biblia.livros.length; i++)
-                        Text(
-                          biblia.livros[i]
+                    for (var i = 0; i < biblia.livros.length; i++)
+                      SizedBox(
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () => {
+                                biblia.goToChapterSelector(biblia.livros[i]),
+                              },
+                              child: Text(
+                                biblia.livros[i]
+                              ),
+                            ),
+                          ],
                         ),
+                      ),
                   ],
                 ),
               ),
